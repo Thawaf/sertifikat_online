@@ -1,0 +1,84 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+}
+
+/* Header Styles */
+header {
+    background-color: #F0E68C; /* Warna merah */
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2rem;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #ff3333; /* Warna merah lebih gelap */
+    color: #fff;
+    width: 250px;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-left: 250px; /* Mengikuti lebar sidebar */
+    padding: 20px;
+}
+
+/* Content Styles */
+.content {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Event Table Styles */
+.event-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.event-table th,
+.event-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.event-table th {
+    background-color: #00CED1; /* Warna biru */
+    color: #fff;
+}
+
+.event-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

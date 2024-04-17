@@ -1,0 +1,83 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body Styles */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Login Container Styles */
+  .login-container {
+    background-color: #f0f8ff; /* Light Blue */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 400px;
+  }
+  
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007bff; /* Dark Blue */
+  }
+  
+  /* Form Styles */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Submit Button Styles */
+  .login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Dark Blue */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-btn:hover {
+    background-color: #0056b3; /* Darker Blue */
+  }
+  
+  /* Link Styles */
+  .link {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  .link a {
+    color: #007bff; /* Dark Blue */
+    text-decoration: none;
+  }
+  
+  .link a:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Darker Blue */
+  }
+      
