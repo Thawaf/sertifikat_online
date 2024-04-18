@@ -26,20 +26,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM users WHERE username='$username'";
     $result = $conn->query($sql);
 
+    
     if ($result->num_rows > 0) {
         echo "Username sudah digunakan. Silakan coba dengan username lain.";
     } else {
         // Tambahkan user baru ke database
         $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Enkripsi kata sandi
         $sql = "INSERT INTO users (username, password, full_name, email) VALUES ('$username', '$hashed_password', '$fullname', '$email')";
-
+        
         if ($conn->query($sql) === TRUE) {
-            echo "Registrasi berhasil!";
+            // Registrasi berhasil, redirect ke halaman login
+            header("Location: login_user.php");
+            exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
-
+    
+    function logoutPreviousUser() {
+        // Jika sesi pengguna sebelumnya masih aktif, logout pengguna tersebut
+        if(isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
+            $_SESSION = array(); // Hapus semua data sesi
+            session_destroy(); // Hapus sesi
+        }
+    }
     // Tutup koneksi database
     $conn->close();
 }

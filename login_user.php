@@ -32,9 +32,10 @@ function logoutPreviousUser() {
         $_SESSION = array(); // Hapus semua data sesi
         session_destroy(); // Hapus sesi
     }
-}
+}  
 
 // Proses login
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = connectDB();
 
@@ -44,14 +45,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isUser($conn, $username, $password)) {
         // Logout pengguna sebelumnya jika ada
         logoutPreviousUser();
-
         // Set session user_logged_in dan username
         $_SESSION['user_logged_in'] = true;
         $_SESSION['username'] = $username;
         header("Location: user_dashboard.php"); // Redirect ke dashboard user
         exit();
     } else {
-        echo "Login gagal. Silakan coba lagi.";
+        $error_message = "Login gagal. Silakan coba lagi.";
     }
 
     $conn->close();
@@ -69,7 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="login-container">
         <h2>Login User</h2>
-        <form action="" method="POST">
+        <?php if(isset($error_message)) { echo "<p>$error_message</p>"; } ?>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br><br>
             <label for="password">Password:</label>

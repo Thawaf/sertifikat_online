@@ -1,43 +1,57 @@
 <?php
 session_start();
 
-// Jika ada pengiriman data form
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Koneksi ke database
+//Fungsi koneksi ke database
+function connectDB() {
     $servername = "localhost";
     $username = "root";
     $password = "";
     $dbname = "sertifikat_online";
+    return new mysqli($servername, $username, $password, $dbname);
+}
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Periksa koneksi
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-    }
-
-    // Ambil data dari formulir
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Lakukan autentikasi admin
-    $sql = "SELECT * FROM admins WHERE username='$username'";
+function isAdmin($conn, $username, $password) {
+    $sql = "SELECT password FROM admins WHERE username='$username'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Admin ditemukan, bandingkan password yang dihash
         $row = $result->fetch_assoc();
-        if (password_verify($password, $row['password'])) {
-            // Password cocok, admin berhasil login
-            $_SESSION['admin_logged_in'] = true;
-            $conn->close();
-            header("Location: admin_dashboard.php"); // Redirect ke dashboard admin
-            exit;
-        }
+        $stored_password = $row['password'];
+        return password_verify($password, $stored_password);
+    } else {
+        return false;
     }
+}
 
-    // Admin gagal login
-    $login_error = "Login gagal. Silakan coba lagi.";
+// Fungsi untuk logout admin sebelumnya jika ada
+function logoutPreviousAdmin() {
+    // Jika sesi admin sebelumnya masih aktif, logout admin tersebut
+    if(isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+        $_SESSION = array(); // Hapus semua data sesi
+        session_destroy(); // Hapus sesi
+    }
+}
+
+// Proses login admin
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $conn = connectDB();
+
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    if (isAdmin($conn, $username, $password)) {
+        // Logout admin sebelumnya jika ada
+        logoutPreviousAdmin();
+
+        // Set session admin_logged_in dan username
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['username'] = $username;
+        header("Location: admin_dashboard.php"); // Redirect ke dashboard admin
+        exit();
+    } else {
+        echo "Login gagal. Silakan coba lagi.";
+    }
 
     $conn->close();
 }
@@ -49,16 +63,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin - Sertifikat Online</title>
-    <link rel="stylesheet" href="style.css">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="admin_login.css">
 </head>
 <body>
     <div class="login-container">
         <h2>Login Admin</h2>
-        <?php if(isset($login_error)) { ?>
-            <p><?php echo $login_error; ?></p>
-        <?php } ?>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+        <form action="" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br><br>
             <label for="password">Password:</label>
